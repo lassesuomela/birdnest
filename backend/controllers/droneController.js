@@ -2,7 +2,17 @@ const axios = require('axios');
 const xmlParser = require('xml-js');
 
 const NodeCache = require( "node-cache" );
-const cache = new NodeCache({ stdTTL: 600, checkperiod: 120 });
+const cache = new NodeCache({ stdTTL: 10, checkperiod: 120 });
+
+const getPilotData = async (sn) => {
+    const response = await axios.get("https://assignments.reaktor.com/birdnest/pilots/" + sn);
+
+    if(response.status !== 200){
+        return null;
+    }
+
+    return response.data;
+}
 
 const getDrones = async (req, res) => {
 
@@ -20,6 +30,8 @@ const getDrones = async (req, res) => {
         res.header("X-Cache", "MISS");
     }
 
+    const droneList = [];
+
     try {
         const response = await axios.get("http://assignments.reaktor.com/birdnest/drones");
 
@@ -33,8 +45,6 @@ const getDrones = async (req, res) => {
 
         const drones = data.elements[0].elements[1].elements;
 
-        let droneList = [];
-
         drones.forEach(drone => {
             const sn = drone.elements[0].elements[0].text;
 
@@ -43,31 +53,29 @@ const getDrones = async (req, res) => {
 
             const distanceToNest = Math.sqrt((x-250000)**2+(y-250000)**2);
 
-            if(((x-250000)**2 + (y - 250000)**2) > 100**2){
-                droneList.push({
-                    lastSeen: timestamp,
-                    sn:sn,
-                    distanceToNest:distanceToNest,
-                    x:x,
-                    y:y
-                })
-            }
+            droneList.push({
+                lastSeen: timestamp,
+                sn:sn,
+                distanceToNest:distanceToNest,
+                x:x,
+                y:y,
+                isInNDZ: ((x-250000)**2 + (y - 250000)**2) <= 100**2
+            });
 
         });
 
-        const payload = {
-            drones: droneList
-        };
-
-        if(payload[drones] > 0){
-            cache.set("drones", {payload})
-        }
-
-        res.json({payload})
     }catch(err) {
-        console.error(err)
-        res.status(500).json({error: err.message})
+        console.error(err);
+        res.status(500).json({error: err.message});
     }
+
+    await Promise.all(droneList.map(async (drone, i) => {
+        const pilotData = await getPilotData(drone.sn);
+
+        droneList[i] = {drone: droneList[i], pilot: pilotData};
+    }));
+
+    res.json({list:droneList});
 }
 
 module.exports = {
