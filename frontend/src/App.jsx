@@ -1,33 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import "./App.css";
+
+import PilotTable from "./components/PilotTable";
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [drones, setDrones] = useState([]);
+  const [pilots, setPilots] = useState([]);
+  const [count, setCount] = useState(0);
+
+  const fetchNDZData = async () => {
+    try {
+
+      const response = await axios.get(import.meta.env.VITE_DEV_URL + "/drones");
+
+      if(response.status !== 200){
+        return console.error("Error with the server: " + response);
+      }
+
+      const droneData = [];
+      const pilotData = [];
+
+      response.data.list.forEach(data => {
+        droneData.push(data.drone);
+        pilotData.push(data.pilot);
+      });
+
+      setCount(response.data.count);
+
+      setDrones(droneData);
+      setPilots(pilotData);
+
+    } catch (error) {
+      console.error("Error with the server: " + error);
+    }
+  }
+
+  useEffect(() => {
+
+    fetchNDZData();
+
+    setInterval(async () => {
+
+      fetchNDZData();
+    }, 5000);
+    
+  }, [])
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <>
+      <h2>Violation count: {count}</h2>
+      
+      <PilotTable pilots={pilots} />
+    </>
   )
 }
 

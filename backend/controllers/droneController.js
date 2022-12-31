@@ -22,7 +22,11 @@ const getDrones = async (req, res) => {
 
     cache.keys().forEach(key => {
         console.log(key)
-        console.log(JSON.parse(cache.get(key)))
+        try {
+            console.log(JSON.parse(cache.get(key)))
+        }  catch(err) {
+            console.log("Unable to parse cache key: " + key)
+        }
     })
 
     const droneList = [];
