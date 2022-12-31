@@ -24,8 +24,10 @@ function App() {
     interval = seconds / 60;
 
     if (interval > 1) {
-      return `${Math.floor(seconds)} minutes ago`
-    }else if(interval > 0){
+      return `${Math.floor(interval)} minutes ago`
+    }
+
+    if(interval > 0){
       return `${Math.floor(seconds)} seconds ago`
     }else{
       return "now";
