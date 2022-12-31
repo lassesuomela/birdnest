@@ -11,6 +11,27 @@ function App() {
   const [pilots, setPilots] = useState([]);
   const [count, setCount] = useState(0);
 
+  // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
+  const formatTimestamp = (date) => {
+
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+
+    let interval = seconds / 31536000;
+
+    interval = seconds / 2592000;
+    interval = seconds / 86400;
+    interval = seconds / 3600;
+    interval = seconds / 60;
+
+    if (interval > 1) {
+      return `${Math.floor(seconds)} minutes ago`
+    }else if(interval > 0){
+      return `${Math.floor(seconds)} seconds ago`
+    }else{
+      return "now";
+    }
+  }
+
   const fetchNDZData = async () => {
     try {
 
@@ -25,7 +46,15 @@ function App() {
 
       response.data.list.forEach(data => {
         droneData.push(data.drone);
-        pilotData.push(data.pilot);
+
+        let pilotStuff = data.pilot;
+
+        pilotStuff.createdDt = new Date(data.pilot.createdDt).toLocaleString('en-GB', { timeZone: 'UTC' });
+        pilotStuff.lastSeen = formatTimestamp(data.drone.lastSeen);
+        pilotStuff.closestDistanceToNest = data.drone.closestDistanceToNest.toFixed(1);
+        pilotStuff.drone = data.drone.sn;
+
+        pilotData.push(pilotStuff);
       });
 
       setCount(response.data.count);

@@ -2,7 +2,7 @@ const axios = require('axios');
 const xmlParser = require('xml-js');
 
 const NodeCache = require( "node-cache" );
-const cache = new NodeCache({ stdTTL: 600, checkperiod: 30 });
+const cache = new NodeCache({ stdTTL: 600, checkperiod: 60 });
 
 const getPilotData = async (sn) => {
     const response = await axios.get("https://assignments.reaktor.com/birdnest/pilots/" + sn);
@@ -18,15 +18,8 @@ const getDrones = async (req, res) => {
 
     console.log("Old caches: " + JSON.stringify(cache.keys()));
 
-    console.log("Old cache data:")
-
     cache.keys().forEach(key => {
-        console.log(key)
-        try {
-            console.log(JSON.parse(cache.get(key)))
-        }  catch(err) {
-            console.log("Unable to parse cache key: " + key)
-        }
+        console.log(key + " | TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
     })
 
     const droneList = [];
@@ -103,10 +96,12 @@ const getDrones = async (req, res) => {
     const droneAndPilotList = [];
 
     cache.keys().forEach(key => {
-        console.log(key);
-        console.log(JSON.parse(cache.get(key)));
-
-        droneAndPilotList.push(JSON.parse(cache.get(key)));
+        console.log(key + " | TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
+        try {
+            droneAndPilotList.push(JSON.parse(cache.get(key)));
+        }  catch(err) {
+            console.log("Unable to parse cache key: " + key)
+        }
     })
 
     res.json({
