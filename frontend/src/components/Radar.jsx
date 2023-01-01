@@ -15,14 +15,16 @@ ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, annota
 export default function Radar(props) {
 
     const [drones, setDrones] = useState([]);
+    const [outerDrones, setOuterDrones] = useState([]);
 
     useEffect(() => {
-        setDrones(props.drones)
-    }, [props.drones])
+        setDrones(props.drones);
+        setOuterDrones(props.outerDrones);
+    }, [props.drones, props.outerDrones])
 
     const options = {
-        maintainAspectRatio: true,
         aspectRatio: 1,
+        maintainAspectRatio: true,
         scales: {
             y: {
                 max:500,
@@ -63,6 +65,16 @@ export default function Radar(props) {
             backgroundColor: 'rgb(238, 46, 49)'
         }))
     };
+
+    outerDrones.map(drone => (
+        data.datasets.push(
+            {
+                label: drone.sn,
+                data: [{x:drone.x / 1000, y:drone.y / 1000}],
+                backgroundColor: 'rgb(89, 89, 89)'
+            }
+        )
+    ))
 
     data.datasets.push({
         label: "Nest",

@@ -10,6 +10,7 @@ function App() {
 
   const [drones, setDrones] = useState([]);
   const [pilots, setPilots] = useState([]);
+  const [outerDrones, setOuterDrones] = useState([]);
   const [count, setCount] = useState(0);
 
   // https://stackoverflow.com/questions/3177836/how-to-format-time-since-xxx-e-g-4-minutes-ago-similar-to-stack-exchange-site
@@ -46,6 +47,7 @@ function App() {
 
       const droneData = [];
       const pilotData = [];
+      const outerDroneData = [];
 
       response.data.list.forEach(data => {
         droneData.push(data.drone);
@@ -58,9 +60,16 @@ function App() {
         pilotData.push(pilotStuff);
       });
 
+      response.data.notInNDZ.forEach(data => {
+
+        console.log(data);
+        outerDroneData.push(data);
+      });
+
       setCount(response.data.count);
 
       setDrones(droneData);
+      setOuterDrones(outerDroneData);
       setPilots(pilotData);
 
     } catch (error) {
@@ -83,7 +92,7 @@ function App() {
     <>
       <h2>Birdnest - Drone Watcher</h2>
       <div className="radar">
-        <Radar drones={drones} />
+        <Radar drones={drones} outerDrones={outerDrones} />
       </div>
 
       <h2>Intruder count: {count}</h2>

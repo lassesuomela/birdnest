@@ -8,6 +8,7 @@ const getPilotData = async (sn) => {
     const response = await axios.get("https://assignments.reaktor.com/birdnest/pilots/" + sn);
 
     if(response.status !== 200){
+        console.log("Could not find pilot data")
         return null;
     }
 
@@ -38,8 +39,9 @@ const getDrones = async (req, res) => {
             const y = drone.elements[7].elements[0].text;
             const x = drone.elements[8].elements[0].text;
 
-            // distance to point (250000, 250000) converted to meters
-            const distanceToNest = Math.sqrt((x - 250000)**2 + (y - 250000)**2) / 1000;
+            // https://www.youtube.com/watch?v=S6BHQMk8C_A
+            // distance to origin point of the nest converted to meters
+            const distanceToNest = Math.sqrt((x-250000)**2 + (y-250000)**2) / 1000;
 
             const droneData = {
                 lastSeen: timestamp,
@@ -49,13 +51,12 @@ const getDrones = async (req, res) => {
                 y: y
             };
 
-            if((Math.abs(x - 250000) + Math.abs(y - 250000)) / 1000 <= 100){
+            if(Math.sqrt((x-250000)**2 + (y-250000)**2) <= 100000){
 
                 droneList.push(droneData);
             }else {
                 outerDroneList.push(droneData);
             }
-
         });
 
     }catch(err) {
