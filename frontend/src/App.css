@@ -1,4 +1,24 @@
+.wrapper {
+    display: flex;
+}
+
+.wrapper div {
+    display: block;
+}
+
 .radar {
     width: 25%;
     height: 25%;
+}
+
+th{
+    width: 20ch;
+}
+
+td {
+    text-align: center;
+}
+
+td:nth-child(1), td:nth-child(2) {
+    text-align: start;
 }

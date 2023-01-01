@@ -36,7 +36,7 @@ function App() {
     }
   }
 
-  const fetchNDZData = async () => {
+  const fetchDroneData = async () => {
     try {
 
       const response = await axios.get(import.meta.env.VITE_DEV_URL + "/drones");
@@ -79,25 +79,28 @@ function App() {
 
   useEffect(() => {
 
-    fetchNDZData();
+    fetchDroneData();
 
     setInterval(async () => {
 
-      fetchNDZData();
+      fetchDroneData();
     }, 4000);
     
   }, [])
 
   return (
     <>
-      <h2>Birdnest - Drone Watcher</h2>
+    <h2>Birdnest - Drone Watcher</h2>
+
+    <h2>Intruder count: {count}</h2>
+    <div className="wrapper">
+      
+      <PilotTable pilots={pilots} />
+
       <div className="radar">
         <Radar drones={drones} outerDrones={outerDrones} />
       </div>
-
-      <h2>Intruder count: {count}</h2>
-      
-      <PilotTable pilots={pilots} />
+    </div>
     </>
   )
 }

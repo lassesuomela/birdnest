@@ -3,8 +3,6 @@ import React from 'react'
 export default function PilotTable(props) {
   return (
     <>
-        <h2>Pilots:</h2>
-
         <div>
             <table>
                 <thead>
