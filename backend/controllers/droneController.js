@@ -17,6 +17,7 @@ const getPilotData = async (sn) => {
 const getDrones = async (req, res) => {
 
     const droneList = [];
+    const outerDroneList = [];
 
     try {
         const response = await axios.get("http://assignments.reaktor.com/birdnest/drones");
@@ -40,15 +41,19 @@ const getDrones = async (req, res) => {
             // distance to point (250000, 250000) converted to meters
             const distanceToNest = Math.sqrt((x - 250000)**2 + (y - 250000)**2) / 1000;
 
+            const droneData = {
+                lastSeen: timestamp,
+                sn: sn,
+                closestDistanceToNest: distanceToNest,
+                x: x,
+                y: y
+            };
+
             if((Math.abs(x - 250000) + Math.abs(y - 250000)) / 1000 <= 100){
 
-                droneList.push({
-                    lastSeen: timestamp,
-                    sn: sn,
-                    closestDistanceToNest: distanceToNest,
-                    x: x,
-                    y: y
-                });
+                droneList.push(droneData);
+            }else {
+                outerDroneList.push(droneData);
             }
 
         });
@@ -100,7 +105,8 @@ const getDrones = async (req, res) => {
 
     res.json({
         count: cache.getStats().keys,
-        list:droneAndPilotList
+        list: droneAndPilotList,
+        notInNDZ: outerDroneList
     });
 }
 
