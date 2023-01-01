@@ -21,7 +21,6 @@ export default function Radar(props) {
     }, [props.drones])
 
     const options = {
-        responsive: true,
         scales: {
             y: {
                 max:500,
@@ -33,6 +32,9 @@ export default function Radar(props) {
             }
         },
         plugins: {
+            legend: {
+                display: false
+            },
             annotation: {
                 annotations: {
                     point1: {

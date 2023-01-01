@@ -77,16 +77,18 @@ function App() {
     setInterval(async () => {
 
       fetchNDZData();
-    }, 10000);
+    }, 4000);
     
   }, [])
 
   return (
     <>
+      <h2>Birdnest - Drone Watcher</h2>
+      <div className="radar">
+        <Radar drones={drones} />
+      </div>
 
-      <Radar drones={drones} />
-
-      <h2>Violation count: {count}</h2>
+      <h2>Intruder count: {count}</h2>
       
       <PilotTable pilots={pilots} />
     </>

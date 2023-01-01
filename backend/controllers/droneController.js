@@ -37,16 +37,17 @@ const getDrones = async (req, res) => {
             const y = drone.elements[7].elements[0].text;
             const x = drone.elements[8].elements[0].text;
 
+            // distance to point (250000, 250000) converted to meters
             const distanceToNest = Math.sqrt((x - 250000)**2 + (y - 250000)**2) / 1000;
 
             if((Math.abs(x - 250000) + Math.abs(y - 250000)) / 1000 <= 100){
 
                 droneList.push({
                     lastSeen: timestamp,
-                    sn:sn,
-                    closestDistanceToNest:distanceToNest,
-                    x:x,
-                    y:y
+                    sn: sn,
+                    closestDistanceToNest: distanceToNest,
+                    x: x,
+                    y: y
                 });
             }
 
@@ -54,7 +55,7 @@ const getDrones = async (req, res) => {
 
     }catch(err) {
         console.error(err);
-        res.status(500).json({error: err.message});
+        return res.status(500).json({error: err.message});
     }
 
     await Promise.all(droneList.map(async (drone, i) => {
@@ -64,9 +65,11 @@ const getDrones = async (req, res) => {
 
             const pilotData = await getPilotData(drone.sn);
 
-            cache.set(droneList[i].sn, JSON.stringify({drone: droneList[i], pilot: pilotData}));
+            if(pilotData){
+                cache.set(droneList[i].sn, JSON.stringify({drone: droneList[i], pilot: pilotData}));
 
-            console.log("Saved new record: " + droneList[i].sn);
+                console.log("Saved new record: " + droneList[i].sn);
+            }
 
         }else{
             // alter old record and refresh ttl
@@ -91,7 +94,9 @@ const getDrones = async (req, res) => {
         try {
             droneAndPilotList.push(JSON.parse(cache.get(key)));
         }  catch(err) {
-            console.log("Unable to parse cache key: " + key)
+            console.log("Unable to parse cache key: " + key);
+            console.log("Current date: " + new Date().toLocaleString("fi"));
+            console.log("TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
         }
     })
 

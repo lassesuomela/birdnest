@@ -9,30 +9,22 @@ export default function PilotTable(props) {
             <table>
                 <thead>
                     <tr>
-                        <th>Pilot ID</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
+                        <th>Pilot name</th>
                         <th>Email</th>
                         <th>Phonenumber</th>
-                        <th>Created</th>
                         <th>Last seen</th>
                         <th>Closest distance (m)</th>
-                        <th>Drone SN</th>
                     </tr>
                 </thead>
                 <tbody>
                 {
                     props.pilots.map(pilot => {
                         return <tr key={pilot.pilotId}>
-                            <td>{pilot.pilotId}</td>
-                            <td>{pilot.firstName}</td>
-                            <td>{pilot.lastName}</td>
+                            <td>{pilot.firstName + " " + pilot.lastName}</td>
                             <td>{pilot.email}</td>
                             <td>{pilot.phoneNumber}</td>
-                            <td>{pilot.createdDt}</td>
                             <td>{pilot.lastSeen}</td>
                             <td>{pilot.closestDistanceToNest}</td>
-                            <td>{pilot.drone}</td>
                         </tr>
                     })
                 }
