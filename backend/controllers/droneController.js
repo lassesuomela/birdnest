@@ -95,8 +95,6 @@ const getDrones = async (req, res) => {
             droneAndPilotList.push(JSON.parse(cache.get(key)));
         }  catch(err) {
             console.log("Unable to parse cache key: " + key);
-            console.log("Current date: " + new Date().toLocaleString("fi"));
-            console.log("TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
         }
     })
 

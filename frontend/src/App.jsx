@@ -52,10 +52,8 @@ function App() {
 
         let pilotStuff = data.pilot;
 
-        pilotStuff.createdDt = new Date(data.pilot.createdDt).toLocaleString('en-GB', { timeZone: 'UTC' });
         pilotStuff.lastSeen = formatTimestamp(data.drone.lastSeen);
         pilotStuff.closestDistanceToNest = data.drone.closestDistanceToNest.toFixed(1);
-        pilotStuff.drone = data.drone.sn;
 
         pilotData.push(pilotStuff);
       });

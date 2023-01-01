@@ -21,6 +21,8 @@ export default function Radar(props) {
     }, [props.drones])
 
     const options = {
+        maintainAspectRatio: true,
+        aspectRatio: 1,
         scales: {
             y: {
                 max:500,
