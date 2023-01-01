@@ -16,12 +16,6 @@ const getPilotData = async (sn) => {
 
 const getDrones = async (req, res) => {
 
-    console.log("Old caches: " + JSON.stringify(cache.keys()));
-
-    cache.keys().forEach(key => {
-        console.log(key + " | TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
-    })
-
     const droneList = [];
 
     try {
@@ -91,12 +85,9 @@ const getDrones = async (req, res) => {
 
     }));
 
-    console.log("New caches: " + JSON.stringify(cache.keys()));
-
     const droneAndPilotList = [];
 
     cache.keys().forEach(key => {
-        console.log(key + " | TTL: " + new Date(cache.getTtl(key)).toLocaleString("fi"));
         try {
             droneAndPilotList.push(JSON.parse(cache.get(key)));
         }  catch(err) {

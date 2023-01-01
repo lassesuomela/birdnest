@@ -4,6 +4,7 @@ import axios from "axios";
 import "./App.css";
 
 import PilotTable from "./components/PilotTable";
+import Radar from "./components/Radar";
 
 function App() {
 
@@ -76,12 +77,15 @@ function App() {
     setInterval(async () => {
 
       fetchNDZData();
-    }, 5000);
+    }, 10000);
     
   }, [])
 
   return (
     <>
+
+      <Radar drones={drones} />
+
       <h2>Violation count: {count}</h2>
       
       <PilotTable pilots={pilots} />
