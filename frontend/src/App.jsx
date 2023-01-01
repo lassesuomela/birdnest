@@ -50,9 +50,13 @@ function App() {
       const outerDroneData = [];
 
       response.data.list.forEach(data => {
-        droneData.push(data.drone);
 
+        let droneStuff = data.drone;
         let pilotStuff = data.pilot;
+
+        droneStuff.pilot = data.pilot.firstName + " " + data.pilot.lastName;
+
+        droneData.push(droneStuff);
 
         pilotStuff.lastSeen = formatTimestamp(data.drone.lastSeen);
         pilotStuff.closestDistanceToNest = data.drone.closestDistanceToNest.toFixed(1);

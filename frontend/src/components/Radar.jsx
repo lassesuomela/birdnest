@@ -60,7 +60,7 @@ export default function Radar(props) {
     const data = {
         datasets: drones.map(drone => (
         {
-            label: drone.sn,
+            label: drone.pilot,
             data: [{x:drone.x / 1000, y:drone.y / 1000}],
             backgroundColor: 'rgb(238, 46, 49)'
         }))
