@@ -61,8 +61,6 @@ function App() {
       });
 
       response.data.notInNDZ.forEach(data => {
-
-        console.log(data);
         outerDroneData.push(data);
       });
 

@@ -24,7 +24,7 @@ export default function Radar(props) {
 
     const options = {
         aspectRatio: 1,
-        maintainAspectRatio: true,
+        responsive: true,
         scales: {
             y: {
                 max:500,
@@ -49,7 +49,7 @@ export default function Radar(props) {
                         yMax: 350,
                         backgroundColor: 'rgba(0, 0, 0, 0)',
                         borderColor: 'rgb(59, 112, 128)',
-                        borderWidth:5,
+                        borderWidth: 2,
                         adjustScaleRange: false
                     }
                 }
