@@ -64,35 +64,35 @@ const getDrones = async (req, res) => {
         return res.status(500).json({error: err.message});
     }
 
-    await Promise.all(droneList.map(async (drone, i) => {
+    for (const drone of droneList) {
 
         // save new record to cache
-        if(!cache.get(droneList[i].sn)){
+        if(!cache.get(drone.sn)){
 
             const pilotData = await getPilotData(drone.sn);
 
             if(pilotData){
-                cache.set(droneList[i].sn, JSON.stringify({drone: droneList[i], pilot: pilotData}));
+                cache.set(drone.sn, JSON.stringify({drone: drone, pilot: pilotData}));
 
-                console.log("Saved new record: " + droneList[i].sn);
+                console.log("Saved new record: " + drone.sn);
             }
 
         }else{
             // alter old record and refresh ttl
 
-            let oldData = JSON.parse(cache.take(droneList[i].sn));
+            let oldData = JSON.parse(cache.take(drone.sn));
 
-            oldData.drone.lastSeen = droneList[i].lastSeen;
-            oldData.drone.closestDistanceToNest = oldData.drone.closestDistanceToNest < droneList[i].closestDistanceToNest ? oldData.drone.closestDistanceToNest : droneList[i].closestDistanceToNest;
-            oldData.drone.x = droneList[i].x;
-            oldData.drone.y = droneList[i].y;
+            oldData.drone.lastSeen = drone.lastSeen;
+            oldData.drone.closestDistanceToNest = oldData.drone.closestDistanceToNest < drone.closestDistanceToNest ? oldData.drone.closestDistanceToNest : drone.closestDistanceToNest;
+            oldData.drone.x = drone.x;
+            oldData.drone.y = drone.y;
 
-            cache.set(droneList[i].sn, JSON.stringify(oldData));
+            cache.set(drone.sn, JSON.stringify(oldData));
 
-            console.log("Altered old record: " + droneList[i].sn)
+            console.log("Altered old record: " + drone.sn)
         }
 
-    }));
+    };
 
     const droneAndPilotList = [];
 
