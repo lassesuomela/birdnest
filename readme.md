@@ -1,5 +1,10 @@
 # Readme
 
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Express](	https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+
+![DemoStatus](https://img.shields.io/website?down_message=Offline&label=Demo&up_message=Online&url=https%3A%2F%2Fbirdnest.lassesuomela.com)
+
 This project is a pre-assignment for [Reaktor.com](https://www.reaktor.com/). More about the assignment [here](https://assignments.reaktor.com/birdnest).
 
 Objective of the assignment was to build and deploy a web application which lists all the pilots who recently violated no drone zone perimeter.
@@ -15,6 +20,10 @@ Application will fetch Reaktor's API for drone data and then it will check if th
 Before it will cache the data. It will check if drone is already in the cache by searching it with the drones serial number. If record is found it will compare the new drone position and cached drone position to determine the closest distance to nest. It will also update the last seen field and refresh the TTL of the cache. 
 
 If drone was not found in the cache, it will cache pilot information + drone data (for drones that are in NDZ) in memory cache under drones serial number as that is unique. It will not cache the drones that are not in the NDZ. Those are sent in the response.
+
+# Demo
+
+Available at [https://birdnest.lassesuomela.com](https://birdnest.lassesuomela.com)
 
 # Endpoints
 
