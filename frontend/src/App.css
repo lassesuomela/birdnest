@@ -15,6 +15,11 @@ h4 {
     height: 25%;
 }
 
+.radar a {
+    text-decoration: none;
+    color: black;
+}
+
 th{
     width: 20ch;
 }

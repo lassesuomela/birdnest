@@ -39,7 +39,7 @@ function App() {
   const fetchDroneData = async () => {
     try {
 
-      const response = await axios.get(import.meta.env.VITE_DEV_URL + "/drones");
+      const response = await axios.get(import.meta.env.VITE_URL + "/drones");
 
       if(response.status !== 200){
         return console.error("Error with the server: " + response);
@@ -104,6 +104,8 @@ function App() {
 
         <div className="radar">
           <Radar drones={drones} outerDrones={outerDrones} />
+
+          <a href="https://github.com/lassesuomela/birdnest">GitHub</a>
         </div>
       </div>
     </div>
