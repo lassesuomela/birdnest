@@ -31,18 +31,21 @@ Available at [https://birdnest.lassesuomela.com](https://birdnest.lassesuomela.c
 
 # How to run
 
-1. Clone the repository
-2. `cd backend` to go to the backend directory
-3. `npm i` to install dependencies
-4. `npm run dev` to start nodemon on port 8080
+1. `git clone https://github.com/lassesuomela/birdnest.git` Clone the repository
+2. `cd backend` Go to the backend directory
+3. `npm i` Install dependencies
+4. `npm run dev` Start nodemon on port 8080
 
-5. `cd frontend` to go to the backend directory
-6. `npm i` to install dependencies
-7. `npm run dev` to start vite dev server on port 3000
+5. `cd frontend` Go to the frontend directory
+6. `npm i` Install dependencies
+7. `npm run dev` Start vite dev server on port 3000
 
 # Screenshot
 
 Here you can see my creation. On the right you can see a radar on where the drones were when they violated the NDZ perimeter as red dots. Gray dots are drones that not in the NDZ.
 
-On the left you can see the list of pilots and their information.
+On the left you can see the list of pilots who violated the NDZ perimeter and their information.
+
+Theres also a count of the intruders on the top.
+
 ![Drone watcher](screenshots/Screenshot_1.png)
