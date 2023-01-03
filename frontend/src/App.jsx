@@ -92,15 +92,18 @@ function App() {
 
   return (
     <>
-    <h2>Birdnest - Drone Watcher</h2>
+    <div className="container">
 
-    <h2>Intruder count: {count}</h2>
-    <div className="wrapper">
-      
-      <PilotTable pilots={pilots} />
+      <h2>Birdnest - Drone Watcher</h2>
 
-      <div className="radar">
-        <Radar drones={drones} outerDrones={outerDrones} />
+      <h2>Intruder count: {count}</h2>
+      <div className="wrapper">
+        
+        <PilotTable pilots={pilots} />
+
+        <div className="radar">
+          <Radar drones={drones} outerDrones={outerDrones} />
+        </div>
       </div>
     </div>
     </>

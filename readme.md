@@ -15,7 +15,7 @@ I used React + vite for the frontend and node + express for the backend. I used 
 
 # How it works
 
-Application will fetch Reaktor's API for drone data and then it will check if the drones x y coordinates are inside of the NDZ. XML is returned from the API (/drones) that I have converted to JSON. Then it will query Reaktor's API (pilots/:sn) for pilot data.
+Application will fetch Reaktor's API for drone data and then it will check if the drones x y coordinates are inside of the NDZ. (GET http://assignments.reaktor.com/birdnest/drones) Then it will query Reaktor's API (GET http://assignments.reaktor.com/birdnest/pilots/:sn) for pilot data for the drones that are in the NDZ.
 
 Before it will cache the data. It will check if drone is already in the cache by searching it with the drones serial number. If record is found it will compare the new drone position and cached drone position to determine the closest distance to nest. It will also update the last seen field and refresh the TTL of the cache. 
 
