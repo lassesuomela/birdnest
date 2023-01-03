@@ -92,12 +92,13 @@ function App() {
 
   return (
     <>
-    <div className="container">
+    <div className="container text-center pt-4">
 
       <h2>Birdnest - Drone Watcher</h2>
 
-      <h2>Intruder count: {count}</h2>
-      <div className="wrapper">
+      <h4>Intruder count: {count}</h4>
+
+      <div className="wrapper pt-4">
         
         <PilotTable pilots={pilots} />
 

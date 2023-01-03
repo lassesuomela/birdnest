@@ -4,7 +4,7 @@ export default function PilotTable(props) {
   return (
     <>
         <div>
-            <table>
+            <table className="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Pilot name</th>
