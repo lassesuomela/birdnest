@@ -36,7 +36,7 @@ const getDrones = async (req, res) => {
 
         const data = parser.parse(response.data);
 
-        const timestamp = data.report.capture["@_snapshotTimestamp"].snapshotTimestamp;
+        const timestamp = data.report.capture["@_snapshotTimestamp"];
 
         const drones = data.report.capture.drone;
 
