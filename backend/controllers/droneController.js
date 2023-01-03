@@ -1,7 +1,14 @@
 const axios = require('axios');
-const xmlParser = require('xml-js');
+const {XMLParser} = require('fast-xml-parser');
 
-const NodeCache = require( "node-cache" );
+const options = {
+    ignoreAttributes: false,
+    attributeNamePrefix : "@_"
+};
+
+const parser = new XMLParser(options);
+
+const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: 600, checkperiod: 60 });
 
 const getPilotData = async (sn) => {
@@ -27,17 +34,18 @@ const getDrones = async (req, res) => {
             return res.status(500).json({message:"Could not get drone data"})
         }
 
-        const data = JSON.parse(xmlParser.xml2json(response.data));
+        const data = parser.parse(response.data);
 
-        const timestamp = data.elements[0].elements[1].attributes.snapshotTimestamp;
+        const timestamp = data.report.capture["@_snapshotTimestamp"].snapshotTimestamp;
 
-        const drones = data.elements[0].elements[1].elements;
+        const drones = data.report.capture.drone;
 
         drones.forEach(drone => {
-            const sn = drone.elements[0].elements[0].text;
 
-            const y = drone.elements[7].elements[0].text;
-            const x = drone.elements[8].elements[0].text;
+            const sn = drone.serialNumber;
+
+            const y = drone.positionY;
+            const x = drone.positionX;
 
             // https://www.youtube.com/watch?v=S6BHQMk8C_A
             // distance to origin point of the nest converted to meters
